@@ -15,10 +15,10 @@ jobs:
 
       - name: Build Mac App with Pake
         run: |
-          npx pake-cli https://offline-airdrop-optical-file-transf.vercel.app/ --targets dmg
+          npx pake-cli https://vercel.app --name "MyApp" --targets dmg
 
       - name: Upload Mac DMG File
         uses: actions/upload-artifact@v4
         with:
           name: macOS-DMG-Package
-          path: output/*.dmg
+          path: "*.dmg"
