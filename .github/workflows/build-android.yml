@@ -1,0 +1,24 @@
+name: Build Free Android APK
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build Android App with Pake
+        run: |
+          npx pake-cli https://vercel.app --name "MyApp" --targets apk
+
+      - name: Upload Android APK File
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android-APK-Package
+          path: "*.apk"
