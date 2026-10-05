@@ -1,5 +1,5 @@
 name: Build Free Mac App
-on: [workflow_dispatch] # Allows you to run it with one click
+on: [workflow_dispatch]
 
 jobs:
   build:
@@ -13,13 +13,12 @@ jobs:
         with:
           node-version: 20
 
-      - name: Create Mac App Wrapper
+      - name: Build Mac App with Pake
         run: |
-          npx @nativefier/nativefier --name "My App" "https://offline-airdrop-optical-file-transf.vercel.app/" --platform mac
-          zip -r mac-app.zip "My App-darwin-x64/" "My App-darwin-arm64/" || zip -r mac-app.zip "My App-mas-x64/" || zip -r mac-app.zip *"My App"*
+          npx pake-cli https://offline-airdrop-optical-file-transf.vercel.app/ --targets dmg
 
-      - name: Upload Mac App Zip File
+      - name: Upload Mac DMG File
         uses: actions/upload-artifact@v4
         with:
-          name: macOS-App-Package
-          path: mac-app.zip
+          name: macOS-DMG-Package
+          path: output/*.dmg
