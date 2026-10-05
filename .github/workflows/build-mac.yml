@@ -1,0 +1,25 @@
+name: Build Free Mac App
+on: [workflow_dispatch] # Allows you to run it with one click
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Create Mac App Wrapper
+        run: |
+          npx @nativefier/nativefier --name "My App" "https://offline-airdrop-optical-file-transf.vercel.app/" --platform mac
+          zip -r mac-app.zip "My App-darwin-x64/" "My App-darwin-arm64/" || zip -r mac-app.zip "My App-mas-x64/" || zip -r mac-app.zip *"My App"*
+
+      - name: Upload Mac App Zip File
+        uses: actions/upload-artifact@v4
+        with:
+          name: macOS-App-Package
+          path: mac-app.zip
